@@ -15,12 +15,29 @@
             android:name=".Activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".Activities.Home"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activities.ReportDeforestation"
+            android:label="Report Deforestation"/>
+        <activity android:name=".Activities.SignUp"
+            android:label="Sign Up"/>
+
+        <activity android:name=".Activities.SignIn" />
+        <activity android:name=".Activities.Profile"
+            android:label="User Profile"/>
+        <activity android:name=".Activities.Statistics"
+            android:label="Statistics"/>
+        <activity android:name=".Activities.AddTree"
+            android:label="Add Tree"></activity>
     </application>
 
 </manifest>
