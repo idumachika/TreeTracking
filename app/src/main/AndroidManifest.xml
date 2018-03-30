@@ -3,6 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.iduma.tree_tracking">
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,8 +25,7 @@
         <activity
             android:name=".Activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Activities.Home"
             android:label="@string/title_activity_home"
@@ -26,18 +36,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ReportDeforestation"
-            android:label="Report Deforestation"/>
-        <activity android:name=".Activities.SignUp"
-            android:label="Sign Up"/>
-
+        <activity
+            android:name=".Activities.SignUp"
+            android:label="Sign Up" />
         <activity android:name=".Activities.SignIn" />
-        <activity android:name=".Activities.Profile"
-            android:label="User Profile"/>
-        <activity android:name=".Activities.Statistics"
-            android:label="Statistics"/>
-        <activity android:name=".Activities.AddTree"
-            android:label="Add Tree"></activity>
+        <activity
+            android:name=".Activities.Profile"
+            android:label="User Profile" />
+        <activity
+            android:name=".Activities.Statistics"
+            android:label="Statistics" />
+        <activity
+            android:name=".Activities.AddTree"
+            android:label="Add Tree" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".Activities.ReportDeforestation"
+            android:label="@string/title_activity_report_deforestation"></activity>
     </application>
 
 </manifest>
