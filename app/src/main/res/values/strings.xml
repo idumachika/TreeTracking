@@ -5,4 +5,29 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--parse server details-->
+    <string name="parse_server_url">https://tree-app.herokuapp.com/parse</string>
+    <string name="parse_app_id">tree-tracking</string>
+
+    <string-array name="Gender">
+        <item>Select Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="AccoutType">
+        <item>Select Account Type</item>
+        <item>Individual</item>
+        <item>Organization</item>
+    </string-array>
+
+    <string-array name="Country">
+        <item>Select Country</item>
+        <item>Nigeria</item>
+        <item>Egypt</item>
+    </string-array>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+
+
 </resources>
