@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iduma.tree_tracking.R;
@@ -30,9 +32,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public class SignUp extends AppCompatActivity {
-    private EditText etFname, etLname, etPhone, etPassword, etCountry, etGender;
-    private Spinner spGender, spAccount;
+    private EditText etFname, etLname, etPhone, etPassword;
+    private Spinner spGender, spAccount, spCountry;
     private Button btnSignup;
+    private TextView reg, login;
 
     ProgressBar bar;
     ProgressDialog progressDialog;
@@ -46,7 +49,7 @@ public class SignUp extends AppCompatActivity {
 
         Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG);
 
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.networkInterceptors().add(httpLoggingInterceptor);
@@ -64,14 +67,27 @@ public class SignUp extends AppCompatActivity {
         etLname = findViewById(R.id.etLname);
         etPhone = findViewById(R.id.etPhone);
         etPassword = findViewById(R.id.etPassword);
-        etCountry = findViewById(R.id.etCountry);
+       // etCountry = findViewById(R.id.etCountry);
         //etGender = findViewById(R.id.etGender);
+        spCountry = findViewById(R.id.spCountry);
         spGender = findViewById(R.id.spGender);
-        spAccount = findViewById(R.id.spAccoutType);
+        spAccount = findViewById(R.id.spAccountType);
+        reg = findViewById(R.id.tvReg);
+        login = findViewById(R.id.tvLogin);
         btnSignup = findViewById(R.id.btnSignup);
 
         progressDialog = new ProgressDialog(SignUp.this);
         bar = new ProgressBar(this, null, android.R.attr.progressBarStyleSmall);
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignUp.this, SignIn.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,9 +96,7 @@ public class SignUp extends AppCompatActivity {
                 String firstName = etFname.getText().toString().trim();
                 String lastName = etLname.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
-                String country = etCountry.getText().toString().trim();
-                //String gender = etGender.getText().toString().trim();
-
+                String country = spCountry.getItemAtPosition(spCountry.getSelectedItemPosition()).toString();
                 String gender = spGender.getItemAtPosition(spGender.getSelectedItemPosition()).toString();
                 String accountType = spAccount.getItemAtPosition(spAccount.getSelectedItemPosition()).toString();
 
@@ -95,6 +109,69 @@ public class SignUp extends AppCompatActivity {
                     dialog.show();
                     return;
                 }
+
+                if (TextUtils.isEmpty(firstName)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+                    builder.setMessage("Enter your First name cannot be empty")
+                            .setTitle("Oops!")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(lastName)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+                    builder.setMessage("Last name cannot be empty")
+                            .setTitle("Oops!")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(password)|| password.length() < 5) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+                    builder.setMessage("Password cannot be less than 5")
+                            .setTitle("Oops!")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return;
+                }
+
+                if (gender.equalsIgnoreCase("Select Gender")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+                    builder.setMessage("Please select your gender")
+                            .setTitle("Oops!")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return;
+                }
+
+                if (accountType.equalsIgnoreCase("Select Account Type")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+                    builder.setMessage("Please select your Account type")
+                            .setTitle("Oops!")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return;
+                }
+
+                if (country.equalsIgnoreCase("Select Country")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+                    builder.setMessage("Please select your Country")
+                            .setTitle("Oops!")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return;
+                }
+
+
+
 
                 //create a parseUser object to create a new user
                 final ParseUser user = new ParseUser();
@@ -119,9 +196,16 @@ public class SignUp extends AppCompatActivity {
                             //user already exist? the login
                             if (objects.size() > 0) {
                                 //loginUser(phone, "phone");
-                                Intent reg = new Intent(SignUp.this, SignIn.class);
-                                startActivity(reg);
-                                finish();
+                                Log.d("sign", "" + objects.toString());
+
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(SignUp.this);
+                                builder1.setMessage("User Already Exist, Use a unique phone number")
+                                        .setTitle("Oops!!")
+                                        .setPositiveButton(android.R.string.ok, null);
+                                AlertDialog dialog = builder1.create();
+                                dialog.show();
+
+
                             }else {
                                 //no user found, so signup
                                 signupUser(user);
@@ -131,6 +215,7 @@ public class SignUp extends AppCompatActivity {
 
                         else {
                             //shit happened
+                            Log.d("signup", "failed " + e.getMessage());
                             AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
                             builder.setMessage(e.getMessage())
                                     .setTitle("Oops!")
@@ -152,6 +237,7 @@ public class SignUp extends AppCompatActivity {
 
                             navigateToHome();
                         } else {
+                            Log.d("signup", "failed " + e.getMessage());
                             // Fail!
                             AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
                             builder.setMessage(e.getMessage())

@@ -11,15 +11,21 @@
     <string name="parse_app_id">tree-tracking</string>
 
     <string-array name="Gender">
-        <item>Select gender</item>
+        <item>Select Gender</item>
         <item>Male</item>
-        <Item>Female</Item>
+        <item>Female</item>
     </string-array>
 
-    <string-array name="AccountType">
-        <item>Select Account category</item>
+    <string-array name="AccoutType">
+        <item>Select Account Type</item>
         <item>Individual</item>
-        <Item>Organization</Item>
+        <item>Organization</item>
+    </string-array>
+
+    <string-array name="Country">
+        <item>Select Country</item>
+        <item>Nigeria</item>
+        <item>Egypt</item>
     </string-array>
 
 
