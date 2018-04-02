@@ -27,6 +27,7 @@
         <item>Nigeria</item>
         <item>Egypt</item>
     </string-array>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 
 
 </resources>

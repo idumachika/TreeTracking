@@ -28,6 +28,7 @@ import com.parse.SignUpCallback;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -39,6 +40,7 @@ public class SignUp extends AppCompatActivity {
 
     ProgressBar bar;
     ProgressDialog progressDialog;
+    SweetAlertDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
