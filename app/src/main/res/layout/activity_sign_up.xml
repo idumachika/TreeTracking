@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:mask="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.iduma.tree_tracking.Activities.SignUp">
 
     <ScrollView
@@ -19,8 +20,8 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="3dp"
@@ -59,12 +60,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="20dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="REGISTER"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/login_btn"
                         android:textStyle="bold"
                         android:padding="5dp"
-                        android:textColor="@color/white"
+                        android:textColor="@color/colorPrimary1"
                         android:textSize="20sp" />
 
                     <TextView
@@ -72,13 +75,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="20dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="LOGIN"
+                        android:background="@drawable/register_btn"
                         android:textStyle="bold"
                         android:padding="5dp"
-                        android:background="@color/white"
-                        android:textColor="#6E2C90"
+                        android:textColor="#ffffff"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -97,45 +100,12 @@
                 android:src="@drawable/square" />
 
             <RelativeLayout
-                android:id="@+id/relativeLayout1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/imageView1"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="20dp">
-
-                <ImageView
-                    android:id="@+id/imgView_userIcon"
-                    android:layout_width="40dp"
-                    android:layout_height="45dp"
-                    android:background="#6E2C90"
-                    android:padding="8dp"
-                    android:src="@drawable/phone_number"
-                    android:tint="@color/white" />
-
-                <EditText
-                    android:id="@+id/etPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_alignBottom="@+id/imgView_userIcon"
-                    android:layout_alignParentTop="true"
-                    android:layout_toRightOf="@+id/imgView_userIcon"
-                    android:background="@color/editTextBG"
-                    android:hint="Phone number"
-                    android:inputType="number"
-                    android:paddingLeft="20dp"
-                    android:textSize="15sp" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
                 android:id="@+id/relativeLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relativeLayout1"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_below="@+id/imageView1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp">
 
                 <ImageView
@@ -155,7 +125,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/imgView_userIcon2"
                     android:background="@color/editTextBG"
-                    android:hint="FirstName"
+                    android:hint="@string/firstname"
                     android:paddingLeft="20dp"
                     android:textSize="15sp" />
 
@@ -166,8 +136,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativeLayout2"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp">
 
                 <ImageView
@@ -187,7 +157,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/imgView_userIcon3"
                     android:background="@color/editTextBG"
-                    android:hint="LastName"
+                    android:hint="@string/lastname"
                     android:paddingLeft="20dp"
                     android:textSize="15sp" />
 
@@ -199,8 +169,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativeLayout3"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp">
 
                 <ImageView
@@ -232,8 +202,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativeLayout4"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp">
 
                 <ImageView
@@ -245,19 +215,18 @@
                     android:src="@drawable/gender"
                     android:tint="@color/white" />
 
-                <Spinner
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                     android:id="@+id/spGender"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
+                    android:entries="@array/Gender"
                     android:layout_alignBottom="@+id/imgView_passwordIcon5"
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/imgView_passwordIcon5"
                     android:background="@color/editTextBG"
-                    android:inputType="textPassword"
-                    android:entries="@array/Gender"
                     android:paddingLeft="20dp"
-                    android:textSize="15sp" />
-
+                    android:textSize="15sp"
+                    app:hintText="Select Gender" />
 
             </RelativeLayout>
 
@@ -266,8 +235,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativeLayout5"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp">
 
                 <ImageView
@@ -279,18 +248,18 @@
                     android:src="@drawable/account"
                     android:tint="@color/white" />
 
-                <Spinner
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                     android:id="@+id/spAccountType"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
+                    android:entries="@array/AccoutType"
                     android:layout_alignBottom="@+id/imgView_passwordIcon6"
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/imgView_passwordIcon6"
                     android:background="@color/editTextBG"
-                    android:inputType="textPassword"
-                    android:entries="@array/AccoutType"
                     android:paddingLeft="20dp"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    app:hintText="Select Account Type" />
 
             </RelativeLayout>
 
@@ -299,31 +268,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativeLayout6"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/editTextBG"
                 android:layout_marginTop="20dp">
 
-                <ImageView
-                    android:id="@+id/imgView_passwordIcon7"
-                    android:layout_width="40dp"
-                    android:layout_height="45dp"
-                    android:background="#6E2C90"
-                    android:padding="8dp"
-                    android:src="@drawable/country"
-                    android:tint="@color/white" />
-
-                <Spinner
-                    android:id="@+id/spCountry"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_alignBottom="@+id/imgView_passwordIcon7"
-                    android:layout_alignParentTop="true"
-                    android:layout_toRightOf="@+id/imgView_passwordIcon7"
-                    android:background="@color/editTextBG"
-                    android:inputType="textPassword"
-                    android:entries="@array/Country"
-                    android:paddingLeft="20dp"
-                    android:textSize="15sp" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/spCountry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:ccp_hintExampleNumber="true"
+                        app:ccp_countryPreference="us,in" />
+
+                    <br.com.sapereaude.maskedEditText.MaskedEditText
+                        android:id="@+id/etPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:typeface="monospace"
+                        mask:allowed_chars="1234567890"
+                        mask:mask="##-###-##-###"
+                        android:hint="1234567890"
+                        app:keep_hint="true"/>
+                </LinearLayout>
 
             </RelativeLayout>
 

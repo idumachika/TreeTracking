@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iduma.tree_tracking.R;
+import com.hbb20.CountryCodePicker;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -24,20 +25,23 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import br.com.sapereaude.maskedEditText.MaskedEditText;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public class SignUp extends AppCompatActivity {
-    private EditText etFname, etLname, etPhone, etPassword;
-    private Spinner spGender, spAccount, spCountry;
+    private EditText etFname, etLname, etPassword;
+    private MaskedEditText etPhone;
+    private SearchableSpinner spGender, spAccount;
     private Button btnSignup;
     private TextView reg, login;
-
+    private CountryCodePicker spCountry;
     ProgressBar bar;
     ProgressDialog progressDialog;
     SweetAlertDialog pDialog;
@@ -84,6 +88,9 @@ public class SignUp extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                login.setTextColor(getResources().getColor(R.color.white));
+
                 Intent intent = new Intent(SignUp.this, SignIn.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -91,16 +98,18 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
+
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 final String phone = etPhone.getText().toString().trim();
                 String firstName = etFname.getText().toString().trim();
                 String lastName = etLname.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
-                String country = spCountry.getItemAtPosition(spCountry.getSelectedItemPosition()).toString();
-                String gender = spGender.getItemAtPosition(spGender.getSelectedItemPosition()).toString();
-                String accountType = spAccount.getItemAtPosition(spAccount.getSelectedItemPosition()).toString();
+//                String gender = spGender.getItemAtPosition(spGender.getSelectedItemPosition()).toString();
+//                String accountType = spAccount.getItemAtPosition(spAccount.getSelectedItemPosition()).toString();
 
                 if (TextUtils.isEmpty(phone)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
@@ -142,35 +151,35 @@ public class SignUp extends AppCompatActivity {
                     return;
                 }
 
-                if (gender.equalsIgnoreCase("Select Gender")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                    builder.setMessage("Please select your gender")
-                            .setTitle("Oops!")
-                            .setPositiveButton(android.R.string.ok, null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                    return;
-                }
+//                if (gender.equalsIgnoreCase("Select Gender")) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+//                    builder.setMessage("Please select your gender")
+//                            .setTitle("Oops!")
+//                            .setPositiveButton(android.R.string.ok, null);
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//                    return;
+//                }
 
-                if (accountType.equalsIgnoreCase("Select Account Type")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                    builder.setMessage("Please select your Account type")
-                            .setTitle("Oops!")
-                            .setPositiveButton(android.R.string.ok, null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                    return;
-                }
+//                if (accountType.equalsIgnoreCase("Select Account Type")) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+//                    builder.setMessage("Please select your Account type")
+//                            .setTitle("Oops!")
+//                            .setPositiveButton(android.R.string.ok, null);
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//                    return;
+//                }
 
-                if (country.equalsIgnoreCase("Select Country")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                    builder.setMessage("Please select your Country")
-                            .setTitle("Oops!")
-                            .setPositiveButton(android.R.string.ok, null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                    return;
-                }
+//                if (country.equalsIgnoreCase("Select Country")) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+//                    builder.setMessage("Please select your Country")
+//                            .setTitle("Oops!")
+//                            .setPositiveButton(android.R.string.ok, null);
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//                    return;
+//                }
 
 
 
@@ -181,9 +190,9 @@ public class SignUp extends AppCompatActivity {
                 user.setPassword(password);
                 user.put("firstName", firstName);
                 user.put("lastName", lastName);
-                user.put("country", country);
-                user.put("gender", gender);
-                user.put("accountType", accountType);
+//                user.put("country", country);
+//                user.put("gender", gender);
+//                user.put("accountType", accountType);
 
                 // First query to check whether a ParseUser with
                 // the given phone number already exists or not

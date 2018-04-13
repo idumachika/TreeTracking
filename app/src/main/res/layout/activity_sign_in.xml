@@ -12,12 +12,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="40dp"
             app:cardCornerRadius="10dp"
-            app:cardElevation="3dp"
+            app:cardElevation="16dp"
             app:cardPreventCornerOverlap="false"
             app:cardUseCompatPadding="true">
 
@@ -53,9 +52,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="20dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="20dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="REGISTER"
+                            android:layout_marginRight="10dp"
                             android:textStyle="bold"
                             android:padding="5dp"
                             android:textColor="@color/white"
@@ -66,7 +66,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="20dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="20dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="LOGIN"
                             android:textStyle="bold"
@@ -95,8 +95,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imageView1"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginTop="30dp">
 
                     <ImageView
@@ -127,8 +127,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/relativeLayout1"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginTop="30dp">
 
                     <ImageView
@@ -167,7 +167,7 @@
                     android:layout_marginTop="30dp"
                     android:background="#6E2C90"
                     android:fontFamily="sans-serif-medium"
-                    android:text="SIGN UP"
+                    android:text="Login"
                     android:textColor="@color/white" />
 
                <TextView
@@ -175,7 +175,7 @@
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:text="Forgot Password? Click Here"
-                   android:layout_below="@+id/btnLogin"
+                   android:layout_below="@+id/btnLogin1"
                    android:gravity="center"
                    android:layout_marginTop="30dp"
                    android:textStyle="bold|italic"
