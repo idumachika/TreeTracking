@@ -1,9 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:background="@drawable/greenbox"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.iduma.tree_tracking.Activities.AddTree">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/iv_treeImages"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="16dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/treee"
+        />
+
+    <ImageView
+        android:id="@+id/iv_add_tree"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_photo_camera"
+        android:layout_alignBottom="@id/iv_treeImages"
+        android:layout_alignEnd="@id/iv_treeImages"
+        android:layout_alignRight="@id/iv_treeImages"/>
+    <RelativeLayout
+        android:layout_margin="20dp"
+        android:id="@+id/second_content"
+        android:layout_below="@id/iv_add_tree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:background="@drawable/box"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_tree_coordinates"
+            android:textColor="@color/colorGreen"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif"
+            android:padding="5dp"
+            />
+
+        <TextView
+            android:background="@drawable/box"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/tv_tree_coordinates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_person_name"
+            android:textColor="@color/colorGreen"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif"
+            android:padding="5dp"
+            />
+        <EditText
+            android:background="@drawable/box"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/tv_person_name"
+            android:id="@+id/et_noof_trees"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textColor="@color/colorGreen"
+            android:hint="@string/noofTrees"
+            android:textSize="18sp"
+            android:fontFamily="casual"
+            android:padding="8dp"
+            />
+        <Button
+            android:fontFamily="serif-monospace"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/submitbox"
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/et_noof_trees"
+            android:id="@+id/submit_tree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/submitTree"/>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
