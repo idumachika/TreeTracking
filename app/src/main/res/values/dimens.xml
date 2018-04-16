@@ -15,4 +15,5 @@
     <dimen name="name_marginTopLogin">20dp</dimen>
     <dimen name="phone_marginTop">10dp</dimen>
 
+    <dimen name="activity_margin">16dp</dimen>
 </resources>
