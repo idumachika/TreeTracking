@@ -28,6 +28,8 @@
         <item>Egypt</item>
     </string-array>
     <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="lastname">Lastname</string>
+    <string name="firstname">Firstname</string>
 
 
 </resources>

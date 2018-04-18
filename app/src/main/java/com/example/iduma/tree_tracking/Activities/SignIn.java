@@ -32,8 +32,22 @@ public class SignIn extends AppCompatActivity {
         btnLogin1 = findViewById(R.id.btnLogin1);
 
         btnLogin1.setOnClickListener(new View.OnClickListener() {
+
+            String phone = etPhone1.getText().toString().trim();
+            String password = etPassword1.getText().toString().trim();
+
             @Override
             public void onClick(View v) {
+
+                if (phone.isEmpty()) {
+                    etPhone1.setError("Please enter your phone number");
+                    return;
+                }
+
+                if (password.isEmpty()) {
+                    etPassword1.setError("Please enter your password");
+                    return;
+                }
                 //logic for login
                 ParseUser.logInInBackground("phone", "password", new LogInCallback() {
                     @Override
