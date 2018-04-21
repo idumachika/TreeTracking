@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iduma.tree_tracking.R;
+import com.hbb20.CountryCodePicker;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -24,23 +25,26 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import br.com.sapereaude.maskedEditText.MaskedEditText;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public class SignUp extends AppCompatActivity {
-    private EditText etFname, etLname, etPhone, etPassword;
-    private Spinner spGender, spAccount, spCountry;
+    private EditText etFname, etLname, etPassword;
+    private EditText etPhone;
+    private SearchableSpinner spGender, spAccount;
     private Button btnSignup;
     private TextView reg, login;
-
+    private CountryCodePicker spCountry;
     ProgressBar bar;
     ProgressDialog progressDialog;
-    SweetAlertDialog pDialog;
+    SweetAlertDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +88,9 @@ public class SignUp extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                login.setTextColor(getResources().getColor(R.color.white));
+
                 Intent intent = new Intent(SignUp.this, SignIn.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -91,16 +98,19 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
+
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 final String phone = etPhone.getText().toString().trim();
                 String firstName = etFname.getText().toString().trim();
                 String lastName = etLname.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
-                String country = spCountry.getItemAtPosition(spCountry.getSelectedItemPosition()).toString();
+                final String password = etPassword.getText().toString().trim();
                 String gender = spGender.getItemAtPosition(spGender.getSelectedItemPosition()).toString();
                 String accountType = spAccount.getItemAtPosition(spAccount.getSelectedItemPosition()).toString();
+                String country = spCountry.getSelectedCountryName().toString();
 
                 if (TextUtils.isEmpty(phone)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
@@ -162,7 +172,7 @@ public class SignUp extends AppCompatActivity {
                     return;
                 }
 
-                if (country.equalsIgnoreCase("Select Country")) {
+                if (country.isEmpty()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
                     builder.setMessage("Please select your Country")
                             .setTitle("Oops!")
@@ -172,7 +182,7 @@ public class SignUp extends AppCompatActivity {
                     return;
                 }
 
-
+                progressDialog.show();
 
 
                 //create a parseUser object to create a new user
@@ -185,75 +195,65 @@ public class SignUp extends AppCompatActivity {
                 user.put("gender", gender);
                 user.put("accountType", accountType);
 
+                Log.d("sam", ""+country.toString());
+                Log.d("sam", ""+gender.toString());
+                Log.d("sam", ""+accountType.toString());
+                Log.d("sam", ""+phone.toString());
+
                 // First query to check whether a ParseUser with
                 // the given phone number already exists or not
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
                 query.whereEqualTo("username", phone);
-
                 query.findInBackground(new FindCallback<ParseUser>() {
                     @Override
-                    public void done(List<ParseUser> objects, ParseException e) {
-                        if (e == null) {
-
-                            //user already exist? the login
-                            if (objects.size() > 0) {
-                                //loginUser(phone, "phone");
-                                Log.d("sign", "" + objects.toString());
-
-                                AlertDialog.Builder builder1 = new AlertDialog.Builder(SignUp.this);
-                                builder1.setMessage("User Already Exist, Use a unique phone number")
-                                        .setTitle("Oops!!")
-                                        .setPositiveButton(android.R.string.ok, null);
-                                AlertDialog dialog = builder1.create();
-                                dialog.show();
-
-
-                            }else {
-                                //no user found, so signup
+                    public void done(List<ParseUser> parseUsers, ParseException e) {
+                        if (e == null ) {
+                            if (parseUsers.size() > 0) {
+                                Intent login  = new Intent(SignUp.this, SignIn.class);
+                                startActivity(login);
+                            } else {
                                 signupUser(user);
                             }
-
-                        }
-
-                        else {
-                            //shit happened
-                            Log.d("signup", "failed " + e.getMessage());
-                            AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                            builder.setMessage(e.getMessage())
-                                    .setTitle("Oops!")
-                                    .setPositiveButton(android.R.string.ok, null);
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-
-                        }
-                    }
-                });
-            }
-
-            private void signupUser(ParseUser user) {
-                user.signUpInBackground(new SignUpCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            // Signup successful!
-
-                            navigateToHome();
                         } else {
-                            Log.d("signup", "failed " + e.getMessage());
-                            // Fail!
                             AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
                             builder.setMessage(e.getMessage())
-                                    .setTitle("Oops!")
-                                    .setPositiveButton(android.R.string.ok, null);
+                                    .setTitle("Ooops")
+                                    .setPositiveButton("Ok", null);
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
                     }
                 });
+
             }
+
+
         });
 
 
+    }
+
+    private void signupUser(ParseUser user) {
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    //signup successful!!
+                    navigateToHome();
+                } else {
+                    //fail!!!
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+                    builder.setMessage(e.getMessage())
+                            .setTitle("Oops!")
+                            .setPositiveButton("Ok", null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
+        });
+    }
+
+    private void loginUser(String phone, String password) {
     }
 
     private void navigateToHome() {

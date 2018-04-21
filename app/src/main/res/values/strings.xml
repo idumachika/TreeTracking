@@ -70,5 +70,12 @@
         <item>Egypt</item>
     </string-array>
     <string name="title_activity_splash_screen">SplashScreen</string>
+development
   
+
+    <string name="lastname">Lastname</string>
+    <string name="firstname">Firstname</string>
+
+
+ sammy_branch
 </resources>
