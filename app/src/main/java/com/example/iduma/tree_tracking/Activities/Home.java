@@ -29,6 +29,8 @@ public class Home extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent addtree = new Intent(Home.this, AddTree.class);
+                startActivity(addtree);
 
             }
         });
@@ -68,9 +70,6 @@ public class Home extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_camera) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
