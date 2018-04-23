@@ -1,8 +1,9 @@
 package com.example.iduma.tree_tracking.Activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,9 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.iduma.tree_tracking.R;
 import com.hbb20.CountryCodePicker;
@@ -23,14 +22,12 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import br.com.sapereaude.maskedEditText.MaskedEditText;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -194,6 +191,13 @@ public class SignUp extends AppCompatActivity {
                 user.put("country", country);
                 user.put("gender", gender);
                 user.put("accountType", accountType);
+
+                SharedPreferences savedSession = getApplicationContext().getSharedPreferences(
+                        "userinfo", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = savedSession.edit();
+                editor.putString("firstName",firstName);
+                editor.putString("lastName",lastName);
+                editor.apply();
 
                 Log.d("sam", ""+country.toString());
                 Log.d("sam", ""+gender.toString());

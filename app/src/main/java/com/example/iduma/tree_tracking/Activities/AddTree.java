@@ -1,6 +1,8 @@
 package com.example.iduma.tree_tracking.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,6 +42,10 @@ public class AddTree extends AppCompatActivity {
 
             }
         });
+
+        setUi();
+
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -49,6 +55,16 @@ public class AddTree extends AppCompatActivity {
             displayTree.setImageBitmap(bitmap);
 
         }
+
+    }
+
+    public void setUi(){
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(
+                "userinfo", Activity.MODE_PRIVATE);
+
+        String reporterFirst = preferences.getString("firstName", "firstName");
+        String reporterSecond=preferences.getString("lastName","lastName");
+        reporterName.setText(reporterFirst+" "+reporterSecond);
 
     }
 
