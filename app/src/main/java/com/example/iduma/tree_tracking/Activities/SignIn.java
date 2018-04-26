@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.iduma.tree_tracking.R;
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -32,6 +33,8 @@ public class SignIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        Parse.initialize(this);
 
         tvReg = findViewById(R.id.tvReg);
         tvLogin = findViewById(R.id.tvLogin);
