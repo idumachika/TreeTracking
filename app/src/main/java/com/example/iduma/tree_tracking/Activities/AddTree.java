@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,6 +20,8 @@ public class AddTree extends AppCompatActivity {
     private TextView reporterName;
     private EditText uNoofTrees;
     private static final int CAMERA_REQUEST_CODE = 1;
+    private String firstname, lastname;
+    private double latitude, longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,18 @@ public class AddTree extends AppCompatActivity {
         reporterName = (TextView)findViewById(R.id.tv_person_name);
         uNoofTrees = (EditText)findViewById(R.id.et_noof_trees);
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if (bundle != null) {
+            firstname = bundle.getString("firstname");
+            lastname = bundle.getString("lastname");
+            latitude = bundle.getDouble("lat");
+            longitude = bundle.getDouble("long");
+
+            Log.d("lat...", "" +latitude);
+            Log.d("long...", "" +longitude);
+        }
 
         addTreeImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +55,9 @@ public class AddTree extends AppCompatActivity {
 
             }
         });
+
+        treeCoordinates.setText(latitude + ", " + longitude);
+        reporterName.setText(lastname.concat(" ").concat(firstname));
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

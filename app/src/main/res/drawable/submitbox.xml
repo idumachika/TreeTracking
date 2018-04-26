@@ -6,11 +6,7 @@
         android:radius="10dp"
         />
     <solid
-        android:color="#1ced54"
-        />
-    <stroke
-        android:color="#ffffff"
-        android:width="5dp"
+        android:color="#5e5e5e"
         />
 
 </shape>
