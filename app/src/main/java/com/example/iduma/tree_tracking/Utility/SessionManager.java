@@ -1,4 +1,4 @@
-package com.example.iduma.tree_tracking.Utils;
+package com.example.iduma.tree_tracking.Utility;
 
 /**
  * Created by iduma on 3/28/18.

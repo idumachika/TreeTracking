@@ -6,7 +6,7 @@
 # JRE version: OpenJDK Runtime Environment (8.0_152-b01) (build 1.8.0_152-release-915-b01)
 # Java VM: OpenJDK 64-Bit Server VM (25.152-b01 mixed mode linux-amd64 compressed oops)
 # Problematic frame:
-# J 25326 C2 com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl.callUserDataHandlers(Lorg/w3c/dom/Node;Lorg/w3c/dom/Node;SLjava/util/Map;)V (98 bytes) @ 0x00007f08a8f3e7fd [0x00007f08a8f3e440+0x3bd]
+# J 25326 C2 com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl.callUserDataHandlers(Lorg/w3c/dom/Node;Lorg/w3c/dom/Node;SLjava/networkUtil/Map;)V (98 bytes) @ 0x00007f08a8f3e7fd [0x00007f08a8f3e440+0x3bd]
 #
 # Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
 #
@@ -71,13 +71,13 @@ Instructions: (pc=0x00007f08a8f3e7fd)
 Register to memory mapping:
 
 RAX=0x00000000efc01888 is an oop
-java.util.HashMap$KeySet 
- - klass: 'java/util/HashMap$KeySet'
+java.networkUtil.HashMap$KeySet
+ - klass: 'java/networkUtil/HashMap$KeySet'
 RBX=0x0000000000000000 is an unknown value
 RCX=0x0000000000000001 is an unknown value
 RDX=0x00000000ed5c35a0 is an oop
-[Ljava.util.HashMap$Node; 
- - klass: 'java/util/HashMap$Node'[]
+[Ljava.networkUtil.HashMap$Node;
+ - klass: 'java/networkUtil/HashMap$Node'[]
  - length: 16
 RSP=0x00007f08625faa50 is pointing into the stack for thread: 0x00007f08640a9000
 RBP=0x0000000000000001 is an unknown value
@@ -89,22 +89,22 @@ RDI=0x00000000ed5c3478 is an oop
  - klass: 'java/lang/Object'[]
  - length: 5
 R8 =0x00000000ed5c3538 is an oop
-java.util.HashMap 
- - klass: 'java/util/HashMap'
+java.networkUtil.HashMap
+ - klass: 'java/networkUtil/HashMap'
 R9 =0x0000000000000010 is an unknown value
 R10=0x0000000080000000 is an unknown value
 R11=0x0000000000000001 is an unknown value
 R12=0x0000000000000000 is an unknown value
 R13=0x000000010001b798 is pointing into metadata
 R14=0x00000000ed5c3538 is an oop
-java.util.HashMap 
- - klass: 'java/util/HashMap'
+java.networkUtil.HashMap
+ - klass: 'java/networkUtil/HashMap'
 R15=0x00007f08640a9000 is a thread
 
 
 Stack: [0x00007f08624fd000,0x00007f08625fe000],  sp=0x00007f08625faa50,  free space=1014k
 Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
-J 25326 C2 com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl.callUserDataHandlers(Lorg/w3c/dom/Node;Lorg/w3c/dom/Node;SLjava/util/Map;)V (98 bytes) @ 0x00007f08a8f3e7fd [0x00007f08a8f3e440+0x3bd]
+J 25326 C2 com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl.callUserDataHandlers(Lorg/w3c/dom/Node;Lorg/w3c/dom/Node;SLjava/networkUtil/Map;)V (98 bytes) @ 0x00007f08a8f3e7fd [0x00007f08a8f3e440+0x3bd]
 J 27862 C2 com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl.adoptNode(Lorg/w3c/dom/Node;)Lorg/w3c/dom/Node; (512 bytes) @ 0x00007f08a9474378 [0x00007f08a9473d80+0x5f8]
 J 25322 C2 com.android.ide.common.res2.NodeUtils.adoptNode(Lorg/w3c/dom/Document;Lorg/w3c/dom/Node;)Lorg/w3c/dom/Node; (15 bytes) @ 0x00007f08a8f2e924 [0x00007f08a8f2e900+0x24]
 j  com.android.ide.common.res2.MergedResourceWriter.postWriteAction()V+407
@@ -146,8 +146,8 @@ J 29209 C1 org.gradle.execution.taskgraph.DefaultTaskExecutionPlan.execute(Lorg/
 J 28372 C1 org.gradle.execution.taskgraph.DefaultTaskExecutionPlan.executeWithTask(Lorg/gradle/internal/work/WorkerLeaseRegistry$WorkerLease;Lorg/gradle/api/Action;)Z (62 bytes) @ 0x00007f08a9631374 [0x00007f08a9630e20+0x554]
 j  org.gradle.execution.taskgraph.DefaultTaskPlanExecutor$TaskExecutorWorker.run()V+52
 J 29299 C2 org.gradle.internal.concurrent.ManagedExecutorImpl$1.run()V (57 bytes) @ 0x00007f08a97e0204 [0x00007f08a97dff40+0x2c4]
-J 23142 C1 java.util.concurrent.ThreadPoolExecutor.runWorker(Ljava/util/concurrent/ThreadPoolExecutor$Worker;)V (225 bytes) @ 0x00007f08a5f0ebfc [0x00007f08a5f0dbe0+0x101c]
-j  java.util.concurrent.ThreadPoolExecutor$Worker.run()V+5
+J 23142 C1 java.networkUtil.concurrent.ThreadPoolExecutor.runWorker(Ljava/networkUtil/concurrent/ThreadPoolExecutor$Worker;)V (225 bytes) @ 0x00007f08a5f0ebfc [0x00007f08a5f0dbe0+0x101c]
+j  java.networkUtil.concurrent.ThreadPoolExecutor$Worker.run()V+5
 J 29105 C1 org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run()V (13 bytes) @ 0x00007f08a7cc20e4 [0x00007f08a7cc1ba0+0x544]
 J 25913 C1 java.lang.Thread.run()V (17 bytes) @ 0x00007f08a5bbb3c4 [0x00007f08a5bbb280+0x144]
 v  ~StubRoutines::call_stub
@@ -350,14 +350,14 @@ Heap after GC invocations=68 (full 7):
 }
 
 Deoptimization events (10 events):
-Event: 18476.455 Thread 0x00007f0868022000 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007f08a60cd23c method=java.util.Collections$UnmodifiableCollection.contains(Ljava/lang/Object;)Z @ 5
+Event: 18476.455 Thread 0x00007f0868022000 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007f08a60cd23c method=java.networkUtil.Collections$UnmodifiableCollection.contains(Ljava/lang/Object;)Z @ 5
 Event: 18477.312 Thread 0x00007f0868022000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f08a6976d1c method=org.apache.http.message.TokenParser.isWhitespace(C)Z @ 3
-Event: 18478.087 Thread 0x00007f0868022000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f08a6962640 method=org.apache.http.util.CharArrayBuffer.indexOf(III)I @ 46
-Event: 18479.763 Thread 0x00007f0868022000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f08a945b024 method=org.gradle.api.internal.artifacts.ivyservice.ivyresolve.RepositoryChainComponentMetaDataResolver.findBestMatch(Ljava/util/LinkedList;Ljava/util/Collection;Ljava/util/Collect
+Event: 18478.087 Thread 0x00007f0868022000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f08a6962640 method=org.apache.http.networkUtil.CharArrayBuffer.indexOf(III)I @ 46
+Event: 18479.763 Thread 0x00007f0868022000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f08a945b024 method=org.gradle.api.internal.artifacts.ivyservice.ivyresolve.RepositoryChainComponentMetaDataResolver.findBestMatch(Ljava/networkUtil/LinkedList;Ljava/networkUtil/Collection;Ljava/networkUtil/Collect
 Event: 18608.345 Thread 0x00007f0868022000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f08a95b3210 method=org.gradle.api.internal.artifacts.ivyservice.resolveengine.result.DependencyResultSerializer.write(Lorg/gradle/internal/serialize/Encoder;Lorg/gradle/api/internal/artifacts/
-Event: 18705.231 Thread 0x00007f0868022000 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007f08a60cd23c method=java.util.Collections$UnmodifiableCollection.contains(Ljava/lang/Object;)Z @ 5
-Event: 18710.534 Thread 0x00007f0868022000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f08a97fda34 method=org.gradle.api.internal.artifacts.ivyservice.ivyresolve.RepositoryChainComponentMetaDataResolver.findBestMatch(Ljava/util/LinkedList;Ljava/util/Collection;Ljava/util/Collect
-Event: 19142.822 Thread 0x00007f0890052000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f08a691e304 method=java.util.concurrent.ConcurrentLinkedQueue.offer(Ljava/lang/Object;)Z @ 91
+Event: 18705.231 Thread 0x00007f0868022000 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007f08a60cd23c method=java.networkUtil.Collections$UnmodifiableCollection.contains(Ljava/lang/Object;)Z @ 5
+Event: 18710.534 Thread 0x00007f0868022000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f08a97fda34 method=org.gradle.api.internal.artifacts.ivyservice.ivyresolve.RepositoryChainComponentMetaDataResolver.findBestMatch(Ljava/networkUtil/LinkedList;Ljava/networkUtil/Collection;Ljava/networkUtil/Collect
+Event: 19142.822 Thread 0x00007f0890052000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f08a691e304 method=java.networkUtil.concurrent.ConcurrentLinkedQueue.offer(Ljava/lang/Object;)Z @ 91
 Event: 19355.052 Thread 0x00007f08b4080000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f08a663e634 method=java.lang.ThreadLocal$ThreadLocalMap.remove(Ljava/lang/ThreadLocal;)V @ 26
 Event: 19515.475 Thread 0x00007f086805b000 Uncommon trap: reason=null_check action=make_not_entrant pc=0x00007f08a70a92e4 method=com.google.gson.internal.Excluder.isAnonymousOrLocal(Ljava/lang/Class;)Z @ 3
 
@@ -559,7 +559,7 @@ ffe80000-100000000 ---p 00000000 00:00 0
 7f087458c000-7f087458f000 r--s 00020000 08:01 6557024                    /home/alison/.gradle/caches/jars-3/c72fc284d34f39eab57a4e3ba83405e9/org.jacoco.report-0.7.4.201502262128.jar
 7f087458f000-7f0874591000 r--s 0000c000 08:01 6557022                    /home/alison/.gradle/caches/jars-3/9b0a36633c92c6e87e62c81734593183/asm-5.1.jar
 7f0874591000-7f0874593000 r--s 00006000 08:01 6425470                    /home/alison/.gradle/caches/jars-3/50c8a7da333c41693b2b7ce95b6d9d89/asm-tree-5.1.jar
-7f0874593000-7f0874594000 r--s 0000a000 08:01 6425468                    /home/alison/.gradle/caches/jars-3/c4f1f1d5a624f981d35a78d181e2c418/asm-util-5.1.jar
+7f0874593000-7f0874594000 r--s 0000a000 08:01 6425468                    /home/alison/.gradle/caches/jars-3/c4f1f1d5a624f981d35a78d181e2c418/asm-networkUtil-5.1.jar
 7f0874594000-7f0874596000 r--s 0000a000 08:01 6425466                    /home/alison/.gradle/caches/jars-3/d37aa405961c464c627b1efe5def81b8/asm-commons-5.1.jar
 7f0874596000-7f0874597000 r--s 00004000 08:01 6425464                    /home/alison/.gradle/caches/jars-3/2b2689d10a4425b1cb2d0654db2ea088/asm-analysis-5.1.jar
 7f0874597000-7f08745a6000 r--s 000c8000 08:01 6425460                    /home/alison/.gradle/caches/jars-3/af931fae44e009148423077fa09abbd1/kotlin-stdlib-1.1.3-2.jar
@@ -767,7 +767,7 @@ ffe80000-100000000 ---p 00000000 00:00 0
 7f0884071000-7f0884072000 r--s 00007000 08:01 6949936                    /home/alison/.gradle/wrapper/dists/gradle-4.1-all/bzyivzo6n839fup2jbap0tjew/gradle-4.1/lib/plugins/wagon-http-shared4-2.4.jar
 7f0884072000-7f0884075000 r--s 00013000 08:01 6949937                    /home/alison/.gradle/wrapper/dists/gradle-4.1-all/bzyivzo6n839fup2jbap0tjew/gradle-4.1/lib/plugins/aether-api-1.13.1.jar
 7f0884075000-7f0884078000 r--s 0001d000 08:01 6949938                    /home/alison/.gradle/wrapper/dists/gradle-4.1-all/bzyivzo6n839fup2jbap0tjew/gradle-4.1/lib/plugins/aether-impl-1.13.1.jar
-7f0884078000-7f088407c000 r--s 0001c000 08:01 6949940                    /home/alison/.gradle/wrapper/dists/gradle-4.1-all/bzyivzo6n839fup2jbap0tjew/gradle-4.1/lib/plugins/aether-util-1.13.1.jar
+7f0884078000-7f088407c000 r--s 0001c000 08:01 6949940                    /home/alison/.gradle/wrapper/dists/gradle-4.1-all/bzyivzo6n839fup2jbap0tjew/gradle-4.1/lib/plugins/aether-networkUtil-1.13.1.jar
 7f088407c000-7f088407e000 r--s 00006000 08:01 6949941                    /home/alison/.gradle/wrapper/dists/gradle-4.1-all/bzyivzo6n839fup2jbap0tjew/gradle-4.1/lib/plugins/aether-connector-wagon-1.13.1.jar
 7f088407e000-7f088408a000 r--s 0007d000 08:01 6949893                    /home/alison/.gradle/wrapper/dists/gradle-4.1-all/bzyivzo6n839fup2jbap0tjew/gradle-4.1/lib/plugins/maven-core-3.0.4.jar
 7f088408a000-7f088408f000 r--s 00034000 08:01 6949900                    /home/alison/.gradle/wrapper/dists/gradle-4.1-all/bzyivzo6n839fup2jbap0tjew/gradle-4.1/lib/plugins/gson-2.7.jar

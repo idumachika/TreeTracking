@@ -57,19 +57,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activities.SignUp"
-            android:label="Sign Up" />
-        <activity android:name=".Activities.SignIn" />
-        <activity
-            android:name=".Activities.Profile"
-            android:label="User Profile" />
-        <activity
-            android:name=".Activities.Statistics"
-            android:label="Statistics" />
-        <activity
-            android:name=".Activities.AddTree"
-            android:label="Add Tree" />
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

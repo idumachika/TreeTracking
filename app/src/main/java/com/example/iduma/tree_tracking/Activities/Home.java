@@ -14,9 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.iduma.tree_tracking.R;
+import com.parse.Parse;
+import com.parse.ParseUser;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private AppCompatActivity activity = Home.this;
+    private final String TAG = Home.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +29,8 @@ public class Home extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Parse.initialize(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +104,10 @@ public class Home extends AppCompatActivity
             startActivity(profile);
 
         } else if (id == R.id.nav_logout) {
+            ParseUser.logOut();
+            ParseUser currentUser = ParseUser.getCurrentUser(); // This will now be null
+            startActivity(new Intent(Home.this, SignIn.class));
+            finish();
 
         }
 

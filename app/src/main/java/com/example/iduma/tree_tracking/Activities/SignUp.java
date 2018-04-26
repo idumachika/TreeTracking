@@ -1,36 +1,33 @@
 package com.example.iduma.tree_tracking.Activities;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iduma.tree_tracking.R;
 import com.hbb20.CountryCodePicker;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import br.com.sapereaude.maskedEditText.MaskedEditText;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -45,13 +42,15 @@ public class SignUp extends AppCompatActivity {
     ProgressBar bar;
     ProgressDialog progressDialog;
     SweetAlertDialog pd;
+    private KProgressHUD hud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        // Parse.initialize(this);
+//        final NetworkUtil networkUtil = new NetworkUtil();
+//         Parse.initialize(this);
 
         Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG);
 
@@ -73,7 +72,7 @@ public class SignUp extends AppCompatActivity {
         etLname = findViewById(R.id.etLname);
         etPhone = findViewById(R.id.etPhone);
         etPassword = findViewById(R.id.etPassword);
-       // etCountry = findViewById(R.id.etCountry);
+        // etCountry = findViewById(R.id.etCountry);
         //etGender = findViewById(R.id.etGender);
         spCountry = findViewById(R.id.spCountry);
         spGender = findViewById(R.id.spGender);
@@ -142,7 +141,7 @@ public class SignUp extends AppCompatActivity {
                     return;
                 }
 
-                if (TextUtils.isEmpty(password)|| password.length() < 5) {
+                if (TextUtils.isEmpty(password) || password.length() < 5) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
                     builder.setMessage("Password cannot be less than 5")
                             .setTitle("Oops!")
@@ -182,56 +181,63 @@ public class SignUp extends AppCompatActivity {
                     return;
                 }
 
-                progressDialog.show();
+//                if (networkUtil.isNetworkAvailable(SignUp.this)) {
+
+                    hud = KProgressHUD.create(SignUp.this)
+                            .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                            .setLabel("Please wait")
+                            .setDetailsLabel("Validating User...")
+                            .setCancellable(true)
+                            .setAnimationSpeed(2)
+                            .setDimAmount(0.5f)
+                            .setBackgroundColor(Color.BLACK)
+                            .setAutoDismiss(true)
+                            .show();
 
 
-                //create a parseUser object to create a new user
-                final ParseUser user = new ParseUser();
-                user.setUsername(phone);
-                user.setPassword(password);
-                user.put("firstName", firstName);
-                user.put("lastName", lastName);
-                user.put("country", country);
-                user.put("gender", gender);
-                user.put("accountType", accountType);
+                    //create a parseUser object to create a new user
+                    final ParseUser user = new ParseUser();
+                    user.setUsername(phone);
+                    user.setPassword(password);
+                    user.put("firstName", firstName);
+                    user.put("lastName", lastName);
+                    user.put("country", country);
+                    user.put("gender", gender);
+                    user.put("accountType", accountType);
 
-                Log.d("sam", ""+country.toString());
-                Log.d("sam", ""+gender.toString());
-                Log.d("sam", ""+accountType.toString());
-                Log.d("sam", ""+phone.toString());
-
-                // First query to check whether a ParseUser with
-                // the given phone number already exists or not
-                ParseQuery<ParseUser> query = ParseUser.getQuery();
-                query.whereEqualTo("username", phone);
-                query.findInBackground(new FindCallback<ParseUser>() {
-                    @Override
-                    public void done(List<ParseUser> parseUsers, ParseException e) {
-                        if (e == null ) {
-                            if (parseUsers.size() > 0) {
-                                Intent login  = new Intent(SignUp.this, SignIn.class);
-                                startActivity(login);
+                    // First query to check whether a ParseUser with
+                    // the given phone number already exists or not
+                    ParseQuery<ParseUser> query = ParseUser.getQuery();
+                    query.whereEqualTo("username", phone);
+                    query.findInBackground(new FindCallback<ParseUser>() {
+                        @Override
+                        public void done(List<ParseUser> parseUsers, ParseException e) {
+                            if (e == null) {
+                                if (parseUsers.size() > 0) {
+                                    Intent login = new Intent(SignUp.this, SignIn.class);
+                                    startActivity(login);
+                                } else {
+                                    signupUser(user);
+                                }
                             } else {
-                                signupUser(user);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+                                builder.setMessage(e.getMessage())
+                                        .setTitle("Ooops")
+                                        .setPositiveButton("Ok", null);
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
                             }
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                            builder.setMessage(e.getMessage())
-                                    .setTitle("Ooops")
-                                    .setPositiveButton("Ok", null);
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
                         }
-                    }
-                });
+                    });
 
+//                }
             }
-
 
         });
 
 
     }
+
 
     private void signupUser(ParseUser user) {
         user.signUpInBackground(new SignUpCallback() {
@@ -253,11 +259,11 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
-    private void loginUser(String phone, String password) {
-    }
-
     private void navigateToHome() {
         // Let's go to the Login page
+        Toast.makeText(this, "Registration Successful, You can login now.", Toast.LENGTH_SHORT).show();
+        ParseUser.logOut();
+        ParseUser currentUser = ParseUser.getCurrentUser();
         Intent intent = new Intent(SignUp.this, SignIn.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
