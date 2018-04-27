@@ -2,4 +2,7 @@
 <resources>
     <string name="noofTrees">No of Trees</string>
     <string name="submitTree">Submit Tree(s)</string>
+    <string name="treeCord">Coordinate of Tree(s)</string>
+    <string name="reporterName">Name of Reporter</string>
+    <string name="enterNoOfTrees">Enter No of Tree(s)</string>
 </resources>

@@ -75,7 +75,10 @@ development
 
     <string name="lastname">Lastname</string>
     <string name="firstname">Firstname</string>
+    <string name="treeCord">Coordinate of Tree(s)</string>
+    <string name="reporterName">Name of Reporter</string>
+    <string name="enterNoOfTrees">Enter No of Tree(s)</string>
 
 
- sammy_branch
+    sammy_branch
 </resources>

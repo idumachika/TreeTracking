@@ -7,10 +7,13 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.iduma.tree_tracking.R;
 
@@ -20,6 +23,7 @@ public class AddTree extends AppCompatActivity {
     private TextView treeCoordinates;
     private TextView reporterName;
     private EditText uNoofTrees;
+    private Button submitTrees;
     private static final int CAMERA_REQUEST_CODE = 1;
 
     @Override
@@ -32,6 +36,7 @@ public class AddTree extends AppCompatActivity {
         treeCoordinates = (TextView) findViewById(R.id.tv_tree_coordinates);
         reporterName = (TextView)findViewById(R.id.tv_person_name);
         uNoofTrees = (EditText)findViewById(R.id.et_noof_trees);
+        submitTrees = (Button)findViewById(R.id.submit_tree);
 
 
         addTreeImage.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +50,19 @@ public class AddTree extends AppCompatActivity {
 
         setUi();
 
+        submitTrees.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String noofTrees = uNoofTrees.getText().toString().trim();
+                if (TextUtils.isEmpty(noofTrees)||noofTrees=="0"){
+                    Toast.makeText(getApplicationContext(),"No of Trees cannot be empty",
+                            Toast.LENGTH_LONG).show();
+                } else{
 
+                }
+
+            }
+        });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -65,6 +82,8 @@ public class AddTree extends AppCompatActivity {
         String reporterFirst = preferences.getString("firstName", "firstName");
         String reporterSecond=preferences.getString("lastName","lastName");
         reporterName.setText(reporterFirst+" "+reporterSecond);
+        String coordinates = preferences.getString("coordinates","coordinates");
+        treeCoordinates.setText(coordinates);
 
     }
 

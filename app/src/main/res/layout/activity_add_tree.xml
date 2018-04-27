@@ -34,8 +34,19 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:background="@drawable/box"
             android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_tree_cord"
+            android:textColor="@color/colorGreen"
+            android:textSize="12sp"
+            android:text="@string/treeCord"
+            android:fontFamily="sans-serif"
+            />
+
+        <TextView
+            android:layout_below="@id/title_tree_cord"
+            android:background="@drawable/box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_tree_coordinates"
@@ -44,11 +55,21 @@
             android:fontFamily="sans-serif"
             android:padding="5dp"
             />
+        <TextView
+            android:layout_below="@id/tv_tree_coordinates"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_name_ofReporter"
+            android:textColor="@color/colorGreen"
+            android:textSize="12sp"
+            android:text="@string/reporterName"
+            android:fontFamily="sans-serif"
+            />
 
         <TextView
             android:background="@drawable/box"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/tv_tree_coordinates"
+            android:layout_below="@id/title_name_ofReporter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_person_name"
@@ -57,16 +78,28 @@
             android:fontFamily="sans-serif"
             android:padding="5dp"
             />
+        <TextView
+            android:layout_below="@id/tv_person_name"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_noOfTrees"
+            android:textColor="@color/colorGreen"
+            android:textSize="12sp"
+            android:text="@string/noofTrees"
+            android:fontFamily="sans-serif"
+            />
+
+
         <EditText
             android:background="@drawable/box"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/tv_person_name"
+            android:layout_below="@id/title_noOfTrees"
             android:id="@+id/et_noof_trees"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:textColor="@color/colorGreen"
-            android:hint="@string/noofTrees"
+            android:hint="@string/enterNoOfTrees"
             android:textSize="18sp"
             android:fontFamily="casual"
             android:padding="8dp"
