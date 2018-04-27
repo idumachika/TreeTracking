@@ -1,11 +1,16 @@
 package com.example.iduma.tree_tracking.Activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -25,11 +30,20 @@ public class AddTree extends AppCompatActivity {
     private EditText uNoofTrees;
     private Button submitTrees;
     private static final int CAMERA_REQUEST_CODE = 1;
+    private int CAMERA_PERMISSION_CODE=24;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tree);
+
+        if(ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.CAMERA
+            },CAMERA_PERMISSION_CODE);
+
+        }
 
         addTreeImage = (ImageView)findViewById(R.id.iv_add_tree);
         displayTree =(ImageView)findViewById(R.id.iv_treeImages);
@@ -84,6 +98,26 @@ public class AddTree extends AppCompatActivity {
         reporterName.setText(reporterFirst+" "+reporterSecond);
         String coordinates = preferences.getString("coordinates","coordinates");
         treeCoordinates.setText(coordinates);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == CAMERA_PERMISSION_CODE){
+
+            //If permission is granted
+            if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+                //Displaying a toast
+                Toast.makeText(this,"Permission granted ",Toast.LENGTH_LONG).show();
+            }else{
+                //Displaying another toast if permission is not granted
+                Toast.makeText(this,"Oops you just denied the permission",Toast.LENGTH_LONG).show();
+            }
+        }
+
 
     }
 
