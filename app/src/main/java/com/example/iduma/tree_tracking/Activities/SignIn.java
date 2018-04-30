@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iduma.tree_tracking.R;
+import com.example.iduma.tree_tracking.Utility.Util;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.parse.LogInCallback;
 import com.parse.Parse;
@@ -30,7 +31,7 @@ public class SignIn extends AppCompatActivity {
     private KProgressHUD hud;
 
     private ProgressDialog progressDialog;
-//    private NetworkUtil networkUtil;
+    private Util util = new Util();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,6 @@ public class SignIn extends AppCompatActivity {
             goToHomeActivity();
 
         }
-
-//        networkUtil = new NetworkUtil();
 
         tvReg = findViewById(R.id.tvReg);
         tvLogin = findViewById(R.id.tvLogin);
@@ -82,7 +81,7 @@ public class SignIn extends AppCompatActivity {
         String username = etPhone1.getText().toString().trim();
         String password = etPassword1.getText().toString().trim();
 
-//        if (networkUtil.isNetworkAvailable(activity)) {
+        if (util.isNetworkAvailable(activity)) {
 
             if (TextUtils.isEmpty(username) && TextUtils.isEmpty(password)) {
                 Toast.makeText(activity, "Enter your phone number and password", Toast.LENGTH_SHORT).show();
@@ -119,10 +118,10 @@ public class SignIn extends AppCompatActivity {
 
             }
 
-//        }
-//        else {
-//            Toast.makeText(activity, "Check your network", Toast.LENGTH_SHORT).show();
-//        }
+        }
+        else {
+            util.toastMessage(activity, "Check your Network");
+        }
     }
 
     private void goToHomeActivity() {

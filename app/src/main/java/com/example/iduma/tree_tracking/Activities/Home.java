@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.iduma.tree_tracking.R;
+import com.example.iduma.tree_tracking.Utility.Util;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -37,6 +38,7 @@ import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.valdesekamdem.library.mdtoast.MDToast;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -59,10 +61,12 @@ public class Home extends AppCompatActivity
     private static int FATEST_INTERVAL = 5000; // 5 sec
     private static int DISPLACEMENT = 10; // 10 meters
     private GoogleMap mMap;
+    private int LOCATION_PERMISSION_CODE = 130;
     //Bundle data
     private Location location;
     private String lName, id, fName;
     private double latitude, longitude;
+    private Util util = new Util();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,31 +104,39 @@ public class Home extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (util.isNetworkAvailable(activity)) {
+
 //                Bundle bundle1 = new Bundle();
-                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
+                    if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                            activity, Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
 
-                }
-                mLocation = LocationServices.FusedLocationApi
-                        .getLastLocation(mGoogleApiClient);
+                    }
+                    mLocation = LocationServices.FusedLocationApi
+                            .getLastLocation(mGoogleApiClient);
 
-                latitude = mLocation.getLatitude();
-                longitude = mLocation.getLongitude();
+                    latitude = mLocation.getLatitude();
+                    longitude = mLocation.getLongitude();
 //                Toast.makeText(activity, lName.concat(" ").concat(id).concat(" ").concat(fName), Toast.LENGTH_SHORT).show();
 
-                Intent addtree = new Intent(Home.this, AddTree.class);
-                addtree.putExtra("lat", latitude);
-                addtree.putExtra("long", longitude);
-                addtree.putExtra("firstname", fName);
-                addtree.putExtra("lastname", lName);
-                startActivity(addtree);
-
+                    Intent addtree = new Intent(Home.this, AddTree.class);
+                    addtree.putExtra("lat", latitude);
+                    addtree.putExtra("long", longitude);
+                    addtree.putExtra("firstname", fName);
+                    addtree.putExtra("lastname", lName);
+                    startActivity(addtree);
+                } else {
+                    util.toastMessage(activity, "Check your network");
+                }
             }
         });
 
@@ -374,28 +386,39 @@ public class Home extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_add_tree) {
-            // Handle the Add tree Activity
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
 
+            if (util.isNetworkAvailable(activity)) {
+
+                // Handle the Add tree Activity
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+
+                }
+                mLocation = LocationServices.FusedLocationApi
+                        .getLastLocation(mGoogleApiClient);
+                latitude = mLocation.getLatitude();
+                longitude = mLocation.getLongitude();
+                Intent addtree = new Intent(Home.this, AddTree.class);
+
+                addtree.putExtra("lat", latitude);
+                addtree.putExtra("long", longitude);
+                addtree.putExtra("firstname", fName);
+                addtree.putExtra("lastname", lName);
+                startActivity(addtree);
+
+            } else {
+                util.toastMessage(activity, "Check your Network");
             }
-            mLocation = LocationServices.FusedLocationApi
-                    .getLastLocation(mGoogleApiClient);
-            latitude = mLocation.getLatitude();
-            longitude = mLocation.getLongitude();
-            Intent addtree = new Intent(Home.this, AddTree.class);
 
-            addtree.putExtra("lat", latitude);
-            addtree.putExtra("long", longitude);
-            addtree.putExtra("firstname", fName);
-            addtree.putExtra("lastname", lName);
-            startActivity(addtree);
         } else if (id == R.id.nav_statistics) {
             Intent statistics = new Intent(Home.this, Statistics.class);
             startActivity(statistics);
@@ -409,11 +432,15 @@ public class Home extends AppCompatActivity
             startActivity(profile);
 
         } else if (id == R.id.nav_logout) {
-            ParseUser.logOut();
-            ParseUser currentUser = ParseUser.getCurrentUser(); // This will now be null
-            startActivity(new Intent(Home.this, SignIn.class));
-            finish();
+            if (util.isNetworkAvailable(activity)) {
 
+                ParseUser.logOut();
+                ParseUser currentUser = ParseUser.getCurrentUser(); // This will now be null
+                startActivity(new Intent(Home.this, SignIn.class));
+                finish();
+            } else {
+                util.toastMessage(activity, "Check your Network");
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

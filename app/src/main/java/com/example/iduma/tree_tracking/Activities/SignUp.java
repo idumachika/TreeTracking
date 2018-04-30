@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iduma.tree_tracking.R;
+import com.example.iduma.tree_tracking.Utility.Util;
 import com.hbb20.CountryCodePicker;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.parse.FindCallback;
@@ -33,6 +34,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public class SignUp extends AppCompatActivity {
+
+    private AppCompatActivity activity = SignUp.this;
     private EditText etFname, etLname, etPassword;
     private EditText etPhone;
     private SearchableSpinner spGender, spAccount;
@@ -43,14 +46,12 @@ public class SignUp extends AppCompatActivity {
     ProgressDialog progressDialog;
     SweetAlertDialog pd;
     private KProgressHUD hud;
+    private Util util = new Util();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
-//        final NetworkUtil networkUtil = new NetworkUtil();
-//         Parse.initialize(this);
 
         Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG);
 
@@ -72,8 +73,6 @@ public class SignUp extends AppCompatActivity {
         etLname = findViewById(R.id.etLname);
         etPhone = findViewById(R.id.etPhone);
         etPassword = findViewById(R.id.etPassword);
-        // etCountry = findViewById(R.id.etCountry);
-        //etGender = findViewById(R.id.etGender);
         spCountry = findViewById(R.id.spCountry);
         spGender = findViewById(R.id.spGender);
         spAccount = findViewById(R.id.spAccountType);
@@ -181,12 +180,12 @@ public class SignUp extends AppCompatActivity {
                     return;
                 }
 
-//                if (networkUtil.isNetworkAvailable(SignUp.this)) {
+                if (util.isNetworkAvailable(SignUp.this)) {
 
                     hud = KProgressHUD.create(SignUp.this)
                             .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                             .setLabel("Please wait")
-                            .setDetailsLabel("Validating User...")
+                            .setDetailsLabel("Registering User...")
                             .setCancellable(true)
                             .setAnimationSpeed(2)
                             .setDimAmount(0.5f)
@@ -230,7 +229,9 @@ public class SignUp extends AppCompatActivity {
                         }
                     });
 
-//                }
+                } else {
+                    util.toastMessage(activity, "Check your Network");
+                }
             }
 
         });
