@@ -55,7 +55,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/et_noof_trees"
+            android:id="@+id/etNoTrees"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_person_name"
@@ -67,11 +67,23 @@
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
+        <Spinner
+            android:id="@+id/spTreeType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etNoTrees"
+            android:layout_marginTop="10dp"
+            android:entries="@array/TreeType"
+            android:background="@drawable/box"
+            android:padding="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
         <Button
             android:id="@+id/submit_tree"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/et_noof_trees"
+            android:layout_below="@id/spTreeType"
             android:layout_marginTop="25dp"
             android:background="@drawable/submitbox"
             android:text="@string/submitTree"

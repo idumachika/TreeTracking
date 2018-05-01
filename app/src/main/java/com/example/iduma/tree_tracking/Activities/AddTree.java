@@ -15,11 +15,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iduma.tree_tracking.R;
 import com.example.iduma.tree_tracking.Utility.Util;
+import com.parse.GetCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 public class AddTree extends AppCompatActivity {
     private ImageView addTreeImage;
@@ -34,18 +42,24 @@ public class AddTree extends AppCompatActivity {
     private AppCompatActivity activity = AddTree.this;
     private Util util = new Util();
     private Button submitTree;
+    private Spinner spTreeType;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tree);
 
+        Parse.initialize(this);
+
         addTreeImage = findViewById(R.id.iv_add_tree);
         displayTree = findViewById(R.id.iv_treeImages);
         treeCoordinates = findViewById(R.id.tv_tree_coordinates);
         reporterName = findViewById(R.id.tv_person_name);
-        uNoofTrees = findViewById(R.id.et_noof_trees);
+        uNoofTrees = findViewById(R.id.etNoTrees);
         submitTree = findViewById(R.id.submit_tree);
+        spTreeType = findViewById(R.id.spTreeType);
+
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -75,14 +89,54 @@ public class AddTree extends AppCompatActivity {
             }
         });
 
+
         treeCoordinates.setText(latitude + ", " + longitude);
         reporterName.setText(lastname.concat(" ").concat(firstname));
+        final String noTrees = uNoofTrees.getText().toString();
+        final ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
+
+     //  final int Trees = Integer.parseInt(noTrees);
 
         submitTree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (util.isNetworkAvailable(activity)) {
-                    Toast.makeText(activity, "Submitting tree", Toast.LENGTH_SHORT).show();
+
+                    final String noTrees = uNoofTrees.getText().toString();
+                    final String treeType = spTreeType.getItemAtPosition(spTreeType.getSelectedItemPosition()).toString();
+
+                        final ParseObject tree = new ParseObject("Trees");
+                        tree.put("noTrees", noTrees);
+                        tree.put("location", point);
+                        tree.put("treeType", treeType);
+                       // tree.saveInBackground();
+
+                    Log.d("b4", noTrees);
+                    Log.d("b4", point.toString());
+                    Log.d("b4", treeType.toString());
+
+                        tree.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (tree.saveInBackground().isCompleted()) {
+
+                                    Log.d("after", noTrees);
+                                    Log.d("after", point.toString());
+                                    Log.d("after", treeType.toString());
+
+                                    startActivity(new Intent(AddTree.this, Home.class));
+
+                                    Toast.makeText(activity, "suceess", Toast.LENGTH_SHORT).show();
+
+                                }
+                                else {
+                                    Log.d("failed", e.getMessage());
+                                    Toast.makeText(activity, ""+e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+
                 } else {
                     util.toastMessage(activity, "Check your Network");
                 }
