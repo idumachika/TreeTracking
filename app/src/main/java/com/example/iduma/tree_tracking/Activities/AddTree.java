@@ -73,6 +73,7 @@ public class AddTree extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
 
         if (bundle != null) {
+
             firstname = bundle.getString("firstname");
             lastname = bundle.getString("lastname");
             latitude = bundle.getDouble("lat");
