@@ -105,8 +105,9 @@ public class AddTree extends AppCompatActivity {
                     final String noTrees = uNoofTrees.getText().toString();
                     final String treeType = spTreeType.getItemAtPosition(spTreeType.getSelectedItemPosition()).toString();
 
+                    int numberTrees = Integer.parseInt(noTrees);
                         final ParseObject tree = new ParseObject("Trees");
-                        tree.put("noTrees", noTrees);
+                        tree.put("treeNumber", numberTrees);
                         tree.put("location", point);
                         tree.put("treeType", treeType);
                        // tree.saveInBackground();
