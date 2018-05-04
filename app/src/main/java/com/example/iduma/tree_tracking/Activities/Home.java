@@ -36,10 +36,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.Parse;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.valdesekamdem.library.mdtoast.MDToast;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -65,7 +62,7 @@ public class Home extends AppCompatActivity
     private int LOCATION_PERMISSION_CODE = 130;
     //Bundle data
     private Location location;
-    private String lName, id, fName;
+    private String lName, id, fName, country;
     private double latitude, longitude;
     private Util util = new Util();
 
@@ -84,7 +81,6 @@ public class Home extends AppCompatActivity
             id = parseUser.getObjectId();
             lName = (String) parseUser.get("lastName");
             fName = (String) ParseUser.getCurrentUser().get("firstName");
-
         }
 
         final Bundle bundle = getIntent().getExtras();
