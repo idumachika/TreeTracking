@@ -1,16 +1,18 @@
 package com.example.iduma.tree_tracking.Activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,15 +21,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.iduma.tree_tracking.Model.PlantingModel;
 import com.example.iduma.tree_tracking.R;
 import com.example.iduma.tree_tracking.Utility.Util;
-import com.parse.GetCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.SaveCallback;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.valdesekamdem.library.mdtoast.MDToast;
+
+import java.io.ByteArrayOutputStream;
 
 public class AddTree extends AppCompatActivity {
     private ImageView addTreeImage;
@@ -43,14 +50,31 @@ public class AddTree extends AppCompatActivity {
     private Util util = new Util();
     private Button submitTree;
     private Spinner spTreeType;
-
+    private FirebaseAuth.AuthStateListener authListener;
+    private DatabaseReference addTreeRef;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    private String uid;
+    private ProgressDialog dialog;
+    private StorageReference treeImageRef;
+    private DatabaseReference subtree;
+    private String noTrees;
+    private String treeType;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tree);
 
-        Parse.initialize(this);
+        mAuth=FirebaseAuth.getInstance();
+        addTreeRef = FirebaseDatabase.getInstance().getReference().child("Afforestation");
+        treeImageRef = FirebaseStorage.getInstance().getReference().child("xvcxvvvcvx");
+
+        subtree=FirebaseDatabase.getInstance().getReference();
+        //get current user
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        uid = user.getUid();
 
         addTreeImage = findViewById(R.id.iv_add_tree);
         displayTree = findViewById(R.id.iv_treeImages);
@@ -59,6 +83,7 @@ public class AddTree extends AppCompatActivity {
         uNoofTrees = findViewById(R.id.etNoTrees);
         submitTree = findViewById(R.id.submit_tree);
         spTreeType = findViewById(R.id.spTreeType);
+        dialog= new ProgressDialog(this);
 
 
         if (ContextCompat.checkSelfPermission(this,
@@ -80,20 +105,21 @@ public class AddTree extends AppCompatActivity {
 
         }
 
+
         addTreeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
+                }
 
             }
         });
 
 
         treeCoordinates.setText(latitude + ", " + longitude);
-        reporterName.setText(lastname.concat(" ").concat(firstname));
-        final String noTrees = uNoofTrees.getText().toString();
-        final ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
+        reporterName.setText(lastname + " " + firstname);
 
      //  final int Trees = Integer.parseInt(noTrees);
 
@@ -102,39 +128,19 @@ public class AddTree extends AppCompatActivity {
             public void onClick(View view) {
                 if (util.isNetworkAvailable(activity)) {
 
-                    final String noTrees = uNoofTrees.getText().toString();
-                    final String treeType = spTreeType.getItemAtPosition(spTreeType.getSelectedItemPosition()).toString();
+                    noTrees = uNoofTrees.getText().toString().trim();
+                    treeType = spTreeType.getItemAtPosition(spTreeType.getSelectedItemPosition()).toString();
 
-                        final ParseObject tree = new ParseObject("Trees");
-                        tree.put("noTrees", noTrees);
-                        tree.put("location", point);
-                        tree.put("treeType", treeType);
-                       // tree.saveInBackground();
+                    if (TextUtils.isEmpty(noTrees)){
+                        MDToast.makeText(getApplication(),"Pls Add No of trees",
+                                MDToast.LENGTH_LONG, MDToast.TYPE_ERROR).show();
+                    } else if (treeType.equalsIgnoreCase("Select the tree type")){
+                        MDToast.makeText(getApplication(),"Pls Select a valid tree type",
+                                MDToast.LENGTH_LONG, MDToast.TYPE_ERROR).show();
+                    } else {
+                        uploadImage();
 
-                    Log.d("b4", noTrees);
-                    Log.d("b4", point.toString());
-                    Log.d("b4", treeType.toString());
-
-                        tree.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if (tree.saveInBackground().isCompleted()) {
-
-                                    Log.d("after", noTrees);
-                                    Log.d("after", point.toString());
-                                    Log.d("after", treeType.toString());
-
-                                    startActivity(new Intent(AddTree.this, Home.class));
-
-                                    Toast.makeText(activity, "suceess", Toast.LENGTH_SHORT).show();
-
-                                }
-                                else {
-                                    Log.d("failed", e.getMessage());
-                                    Toast.makeText(activity, ""+e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                    }
 
 
                 } else {
@@ -161,13 +167,45 @@ public class AddTree extends AppCompatActivity {
             }
         }
     }
-
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+
+            Bitmap bitmap= (Bitmap)data.getExtras().get("data");
             displayTree.setImageBitmap(bitmap);
 
+        }
+
+    }
+
+    public void uploadImage(){
+
+        StorageReference mountainsRef = treeImageRef.child("TreeImages").child(uid).child("image.jpg");
+        if (displayTree!=null) {
+
+            displayTree.setDrawingCacheEnabled(true);
+            displayTree.buildDrawingCache();
+            Bitmap bitmap = displayTree.getDrawingCache();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            UploadTask uploadTask = mountainsRef.putBytes(data);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadURI = taskSnapshot.getDownloadUrl();
+                    id = addTreeRef.push().getKey();
+                    PlantingModel model = new PlantingModel(lastname + " " + firstname,
+                            latitude + ", " + longitude,treeType,noTrees);
+                    addTreeRef.child(id).setValue(model);
+
+                    addTreeRef.child(id).child("treeImage").setValue(downloadURI.toString());
+                    MDToast.makeText(getApplication(),"Tree Added Successfully",
+                            MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
+                }
+            });
         }
 
     }

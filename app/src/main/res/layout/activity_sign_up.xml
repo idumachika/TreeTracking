@@ -162,13 +162,46 @@
                     android:textSize="15sp" />
 
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/relativeLayout10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativeLayout3"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:id="@+id/imgView_emailIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:background="#6E2C90"
+                    android:padding="8dp"
+                    android:src="@drawable/img_authentication"
+                    android:tint="@color/white" />
+
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignBottom="@+id/imgView_emailIcon"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/imgView_emailIcon"
+                    android:background="@color/editTextBG"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
 
 
             <RelativeLayout
                 android:id="@+id/relativeLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relativeLayout3"
+                android:layout_below="@+id/relativeLayout10"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp">

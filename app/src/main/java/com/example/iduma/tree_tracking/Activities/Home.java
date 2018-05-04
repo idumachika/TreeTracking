@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.iduma.tree_tracking.Model.SignUpModel;
 import com.example.iduma.tree_tracking.R;
 import com.example.iduma.tree_tracking.Utility.Util;
 import com.google.android.gms.common.ConnectionResult;
@@ -35,8 +36,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.parse.Parse;
-import com.parse.ParseUser;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -46,6 +52,7 @@ public class Home extends AppCompatActivity
     private AppCompatActivity activity = Home.this;
     private final static int PLAY_SERVICES_REQUEST = 100;
     private static final int RC_SETTING = 101;
+    private FirebaseAuth mAuth;
     //tag
     private static final String TAG = Home.class.getSimpleName();
     private Location mLocation;
@@ -65,6 +72,8 @@ public class Home extends AppCompatActivity
     private String lName, id, fName, country;
     private double latitude, longitude;
     private Util util = new Util();
+    private FirebaseAuth.AuthStateListener authListener;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +82,40 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Parse.initialize(this);
-        ParseUser parseUser = ParseUser.getCurrentUser();
+        mAuth=FirebaseAuth.getInstance();
+        userRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        //get current user
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String uid = user.getUid();
+        Log.d("uid",""+uid);
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                SignUpModel model = dataSnapshot.child(uid).getValue(SignUpModel.class);
+                fName=model.getFirstName();
+                lName=model.getLastName();
 
-        if (parseUser != null) {
-//            name = parseUser.getUsername();
-            id = parseUser.getObjectId();
-            lName = (String) parseUser.get("lastName");
-            fName = (String) ParseUser.getCurrentUser().get("firstName");
-        }
+                Log.d("lname",""+lName);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        authListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user == null) {
+                    // user auth state is changed - user is null
+                    // launch login activity
+                    startActivity(new Intent(Home.this, SignIn.class));
+                    finish();
+                }
+            }
+        };
 
         final Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.containsKey("location")) {
@@ -130,6 +164,7 @@ public class Home extends AppCompatActivity
                     addtree.putExtra("long", longitude);
                     addtree.putExtra("firstname", fName);
                     addtree.putExtra("lastname", lName);
+
                     startActivity(addtree);
                 } else {
                     util.toastMessage(activity, "Check your network");
@@ -179,6 +214,7 @@ public class Home extends AppCompatActivity
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
+        mAuth.addAuthStateListener(authListener);
     }
 
     @Override
@@ -196,6 +232,9 @@ public class Home extends AppCompatActivity
         super.onStop();
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
+        }
+        if (authListener != null) {
+            mAuth.removeAuthStateListener(authListener);
         }
     }
 
@@ -430,11 +469,8 @@ public class Home extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
             if (util.isNetworkAvailable(activity)) {
+                mAuth.signOut();
 
-                ParseUser.logOut();
-                ParseUser currentUser = ParseUser.getCurrentUser(); // This will now be null
-                startActivity(new Intent(Home.this, SignIn.class));
-                finish();
             } else {
                 util.toastMessage(activity, "Check your Network");
             }
@@ -463,6 +499,11 @@ public class Home extends AppCompatActivity
         }
 
 
+    }
+
+    //sign out method
+    public void signOut() {
+        mAuth.signOut();
     }
 
 

@@ -2,8 +2,8 @@ package com.example.iduma.tree_tracking.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -12,32 +12,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.iduma.tree_tracking.Model.SignUpModel;
 import com.example.iduma.tree_tracking.R;
 import com.example.iduma.tree_tracking.Utility.Util;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hbb20.CountryCodePicker;
 import com.kaopiz.kprogresshud.KProgressHUD;
-import com.parse.FindCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import com.valdesekamdem.library.mdtoast.MDToast;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 public class SignUp extends AppCompatActivity {
 
     private AppCompatActivity activity = SignUp.this;
     private EditText etFname, etLname, etPassword;
-    private EditText etPhone;
+    private EditText etPhone,etEmail;
     private SearchableSpinner spGender, spAccount;
     private Button btnSignup;
     private TextView reg, login;
@@ -47,31 +44,21 @@ public class SignUp extends AppCompatActivity {
     SweetAlertDialog pd;
     private KProgressHUD hud;
     private Util util = new Util();
+    private FirebaseAuth mAuth;
+    private DatabaseReference usersRef;
+    String uId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG);
-
-        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        builder.networkInterceptors().add(httpLoggingInterceptor);
-        builder.connectTimeout(5000, TimeUnit.MILLISECONDS);
-
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("tree-tracking")
-                .clientKey(null)
-                .clientBuilder(builder)
-                .enableLocalDataStore()
-                .server("https://tree-app.herokuapp.com/parse").build());
 
 
         etFname = findViewById(R.id.etFname);
         etLname = findViewById(R.id.etLname);
         etPhone = findViewById(R.id.etPhone);
+        etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         spCountry = findViewById(R.id.spCountry);
         spGender = findViewById(R.id.spGender);
@@ -79,6 +66,9 @@ public class SignUp extends AppCompatActivity {
         reg = findViewById(R.id.tvReg);
         login = findViewById(R.id.tvLogin);
         btnSignup = findViewById(R.id.btnSignup);
+
+        mAuth = FirebaseAuth.getInstance();
+        usersRef= FirebaseDatabase.getInstance().getReference().child("Users");
 
         progressDialog = new ProgressDialog(SignUp.this);
         bar = new ProgressBar(this, null, android.R.attr.progressBarStyleSmall);
@@ -103,12 +93,13 @@ public class SignUp extends AppCompatActivity {
 
 
                 final String phone = etPhone.getText().toString().trim();
-                String firstName = etFname.getText().toString().trim();
-                String lastName = etLname.getText().toString().trim();
+                final String email = etEmail.getText().toString().trim();
+                final String firstName = etFname.getText().toString().trim();
+                final String lastName = etLname.getText().toString().trim();
                 final String password = etPassword.getText().toString().trim();
-                String gender = spGender.getItemAtPosition(spGender.getSelectedItemPosition()).toString();
-                String accountType = spAccount.getItemAtPosition(spAccount.getSelectedItemPosition()).toString();
-                String country = spCountry.getSelectedCountryName().toString();
+                final String gender = spGender.getItemAtPosition(spGender.getSelectedItemPosition()).toString();
+                final String accountType = spAccount.getItemAtPosition(spAccount.getSelectedItemPosition()).toString();
+                final String country = spCountry.getSelectedCountryName().toString();
 
                 if (TextUtils.isEmpty(phone)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
@@ -133,6 +124,15 @@ public class SignUp extends AppCompatActivity {
                 if (TextUtils.isEmpty(lastName)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
                     builder.setMessage("Last name cannot be empty")
+                            .setTitle("Oops!")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return;
+                }
+                if (TextUtils.isEmpty(email)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+                    builder.setMessage("Email cannot be empty")
                             .setTitle("Oops!")
                             .setPositiveButton(android.R.string.ok, null);
                     AlertDialog dialog = builder.create();
@@ -179,96 +179,45 @@ public class SignUp extends AppCompatActivity {
                     dialog.show();
                     return;
                 }
+                else {
+                    progressDialog.setMessage("Signing up user...");
+                    progressDialog.show();
 
-                if (util.isNetworkAvailable(SignUp.this)) {
-
-                    hud = KProgressHUD.create(SignUp.this)
-                            .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                            .setLabel("Please wait")
-                            .setDetailsLabel("Registering User...")
-                            .setCancellable(true)
-                            .setAnimationSpeed(2)
-                            .setDimAmount(0.5f)
-                            .setBackgroundColor(Color.BLACK)
-                            .setAutoDismiss(true)
-                            .show();
-
-
-                    //create a parseUser object to create a new user
-                    final ParseUser user = new ParseUser();
-                    user.setUsername(phone);
-                    user.setPassword(password);
-                    user.put("firstName", firstName);
-                    user.put("lastName", lastName);
-                    user.put("country", country);
-                    user.put("gender", gender);
-                    user.put("accountType", accountType);
-
-                    // First query to check whether a ParseUser with
-                    // the given phone number already exists or not
-                    ParseQuery<ParseUser> query = ParseUser.getQuery();
-                    query.whereEqualTo("username", phone);
-                    query.findInBackground(new FindCallback<ParseUser>() {
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
                         @Override
-                        public void done(List<ParseUser> parseUsers, ParseException e) {
-                            if (e == null) {
-                                if (parseUsers.size() > 0) {
-                                    Intent login = new Intent(SignUp.this, SignIn.class);
-                                    startActivity(login);
-                                } else {
-                                    signupUser(user);
-                                }
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                                builder.setMessage(e.getMessage())
-                                        .setTitle("Ooops")
-                                        .setPositiveButton("Ok", null);
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressDialog.dismiss();
+                            if (!task.isSuccessful()){
+                                MDToast.makeText(getApplication(),"Sign up not successful",
+                                        MDToast.LENGTH_LONG, MDToast.TYPE_ERROR).show();
+                            } else{
+                                MDToast.makeText(getApplication(),"Sign up successful",
+                                        MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
+                                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                uId = user.getUid();
+
+                                SignUpModel signup = new SignUpModel(firstName,lastName,email,password,
+                                        gender,accountType,phone,country);
+                                usersRef.child(uId).setValue(signup);
+                                Intent signin = new Intent(SignUp.this,SignIn.class);
+                                signin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                signin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                signin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(signin);
+
                             }
+
                         }
                     });
 
-                } else {
-                    util.toastMessage(activity, "Check your Network");
                 }
             }
 
-        });
 
 
-    }
+});
 
-
-    private void signupUser(ParseUser user) {
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    //signup successful!!
-                    navigateToHome();
-                } else {
-                    //fail!!!
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                    builder.setMessage(e.getMessage())
-                            .setTitle("Oops!")
-                            .setPositiveButton("Ok", null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-            }
-        });
-    }
-
-    private void navigateToHome() {
-        // Let's go to the Login page
-        Toast.makeText(this, "Registration Successful, You can login now.", Toast.LENGTH_SHORT).show();
-        ParseUser.logOut();
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        Intent intent = new Intent(SignUp.this, SignIn.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
     }
 
 }

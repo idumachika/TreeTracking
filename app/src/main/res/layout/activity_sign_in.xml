@@ -109,16 +109,15 @@
                         android:tint="@color/white" />
 
                     <EditText
-                        android:id="@+id/etPhone1"
+                        android:id="@+id/etemail1"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_alignBottom="@+id/imgView_userIcon"
                         android:layout_alignParentTop="true"
                         android:layout_toRightOf="@+id/imgView_userIcon"
                         android:background="@color/editTextBG"
-                        android:inputType="number"
-                        android:hint="Phone number"
-                        android:maxLength="11"
+                        android:inputType="textEmailAddress"
+                        android:hint="Email Address"
                         android:paddingLeft="20dp"
                         android:textSize="15sp" />
 
