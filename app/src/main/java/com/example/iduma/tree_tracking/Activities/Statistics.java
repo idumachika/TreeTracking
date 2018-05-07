@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.iduma.tree_tracking.Model.DeforestationModel;
 import com.example.iduma.tree_tracking.Model.PlantingModel;
 import com.example.iduma.tree_tracking.R;
 import com.google.firebase.database.DataSnapshot;
@@ -18,30 +19,58 @@ import com.google.firebase.database.ValueEventListener;
 public class Statistics extends AppCompatActivity {
 
     private Button btnRetrieve;
-    private TextView tvAfforest;
+    private TextView tvAfforestEconomics;
+    private TextView tvAfforestNonEco;
+
+    private TextView tvDeforestEconomics;
+    private TextView tvDeforestNonEco;
     private DatabaseReference treeRef;
-    private String nooftree;
-    private int treeno;
+    private DatabaseReference defRef;
+    private String noEcoAffoTree;
+    private String noNEcoAffoTree;
+    private String noEcoDefTree;
+    private String noNonEcoDefTree;
+    private String treeType;
+    private String treeTypeDef;
+    private int treenoEco;
+    private int treenoNonEco;
+    private int defTreeNoEco;
+    private int defTreeNoNonEco;
+    private Button displayAfforestation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
+        tvAfforestEconomics = findViewById(R.id.tvNoOfTrees);
+        tvAfforestNonEco =findViewById(R.id.tvNoOfTreesN);
+        displayAfforestation = findViewById(R.id.displayAfforestation);
+        tvDeforestEconomics = findViewById(R.id.tvNoOfEcoTreeReported);
+        tvDeforestNonEco = findViewById(R.id.tvNoOfNonEcoReported);
 
-        tvAfforest = findViewById(R.id.tvAfforest);
-        btnRetrieve = findViewById(R.id.btnAfforst);
+
         treeRef= FirebaseDatabase.getInstance().getReference().child("Afforestation");
+        defRef = FirebaseDatabase.getInstance().getReference().child("Deforestation");
 
         treeRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                treeno=0;
+                treenoEco=0;
+                treenoNonEco=0;
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     PlantingModel model = ds.getValue(PlantingModel.class);
-                    nooftree =model.getNoOfTrees();
-                    treeno=treeno+Integer.parseInt(nooftree);
-                    Log.d("TAG",""+treeno);
+                    treeType = model.getTypeOfTrees();
+                    Log.d("treeType",""+treeType);
+
+                    if (treeType.matches("Economic")){
+                        noEcoAffoTree =model.getNoOfTrees();
+                        //Log.d("ecotree",""+noEcoAffoTree);
+                        treenoEco=treenoEco+Integer.parseInt(noEcoAffoTree);
+                    }else  if (treeType.matches("Non Economics")){
+                        noNEcoAffoTree =model.getNoOfTrees();
+                        treenoNonEco=treenoNonEco+Integer.parseInt(noNEcoAffoTree);
+                    }
 
                 }
             }
@@ -52,14 +81,44 @@ public class Statistics extends AppCompatActivity {
             }
         });
 
-
-        btnRetrieve.setOnClickListener(new View.OnClickListener() {
+        defRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                tvAfforest.setText(""+treeno);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    DeforestationModel defmodel = ds.getValue(DeforestationModel.class);
+                    treeTypeDef = defmodel.getTypeOfTrees();
+                    Log.d("treeType",""+treeType);
+
+                    if (treeTypeDef.matches("Economic")){
+                        noEcoDefTree =defmodel.getNoOfTrees();
+                        Log.d("ecotree",""+noEcoDefTree);
+                        defTreeNoEco=defTreeNoEco+Integer.parseInt(noEcoDefTree);
+                    }else  if (treeTypeDef.matches("Non Economics")){
+                        noNonEcoDefTree =defmodel.getNoOfTrees();
+                        defTreeNoNonEco=defTreeNoNonEco+Integer.parseInt(noNonEcoDefTree);
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
+        displayAfforestation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("treeNo",""+treenoEco);
+                tvAfforestEconomics.setText(""+treenoEco);
+                tvAfforestNonEco.setText(""+treenoNonEco);
+                tvDeforestEconomics.setText(""+defTreeNoEco);
+                tvDeforestNonEco.setText(""+defTreeNoNonEco);
 
-
+            }
+        });
     }
+
 }

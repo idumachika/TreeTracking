@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="noofTrees">No of Trees</string>
-    <string name="submitTree">Submit Tree</string>
+    <string name="submitTree">Report Afforestation</string>
+    <string name="submitTree1">Report Deforestation</string>
+    <string name="ok">OK</string>
 </resources>

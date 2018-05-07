@@ -1,38 +1,26 @@
 package com.example.iduma.tree_tracking.Model;
 
-/**
- * Created by iduma on 3/28/18.
- */
+public class DeforestationModel {
 
-public class PlantingModel {
-    private String uid, planterName, treeCoordinates,typeOfTrees, noOfTrees;
+    private String reporterName, treeCoordinates,typeOfTrees, noOfTrees;
 
-    public PlantingModel() {
+    public DeforestationModel() {
     }
 
-    public PlantingModel(String uid, String planterName, String treeCoordinates, String typeOfTrees, String noOfTrees) {
-        this.uid = uid;
-        this.planterName = planterName;
+    public DeforestationModel(String reporterName, String treeCoordinates, String typeOfTrees,
+                              String noOfTrees) {
+        this.reporterName = reporterName;
         this.treeCoordinates = treeCoordinates;
         this.typeOfTrees = typeOfTrees;
         this.noOfTrees = noOfTrees;
-
     }
 
-    public String getUid() {
-        return uid;
+    public String getReporterName() {
+        return reporterName;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getPlanterName() {
-        return planterName;
-    }
-
-    public void setPlanterName(String planterName) {
-        this.planterName = planterName;
+    public void setReporterName(String reporterName) {
+        this.reporterName = reporterName;
     }
 
     public String getTreeCoordinates() {

@@ -460,8 +460,13 @@ public class Home extends AppCompatActivity
             startActivity(statistics);
 
         } else if (id == R.id.nav_report_def) {
-            Intent reportDef = new Intent(Home.this, ReportDeforestation.class);
-            startActivity(reportDef);
+            Intent addtree = new Intent(Home.this, ReportDeforestation.class);
+            addtree.putExtra("lat", latitude);
+            addtree.putExtra("long", longitude);
+            addtree.putExtra("firstname", fName);
+            addtree.putExtra("lastname", lName);
+
+            startActivity(addtree);
 
         } else if (id == R.id.nav_profile) {
             Intent profile = new Intent(Home.this, Profile.class);

@@ -180,7 +180,8 @@ public class AddTree extends AppCompatActivity {
     }
 
     public void uploadImage(){
-
+        dialog.setMessage("Reporting Afforestation...");
+        dialog.show();
         StorageReference mountainsRef = treeImageRef.child("TreeImages").child(uid).child("image.jpg");
         if (displayTree!=null) {
 
@@ -197,15 +198,23 @@ public class AddTree extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadURI = taskSnapshot.getDownloadUrl();
                     id = addTreeRef.push().getKey();
-                    PlantingModel model = new PlantingModel(lastname + " " + firstname,
+                    PlantingModel model = new PlantingModel(uid,lastname + " " + firstname,
                             latitude + ", " + longitude,treeType,noTrees);
                     addTreeRef.child(id).setValue(model);
-
+                    dialog.dismiss();
                     addTreeRef.child(id).child("treeImage").setValue(downloadURI.toString());
                     MDToast.makeText(getApplication(),"Tree Added Successfully",
                             MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
+
+                    Intent intent = new Intent(AddTree.this, Home.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                 }
             });
+        } else{
+            MDToast.makeText(getApplication(),"Tree image Empty",
+                    MDToast.LENGTH_LONG, MDToast.TYPE_ERROR).show();
         }
 
     }
