@@ -24,7 +24,7 @@ import com.valdesekamdem.library.mdtoast.MDToast;
 public class SignIn extends AppCompatActivity {
 
     private AppCompatActivity activity = SignIn.this;
-    private TextView tvReg, tvLogin;
+    private TextView tvReg, tvLogin, tvReset;
     private EditText etEmail1, etPassword1;
     private Button btnLogin1;
     private KProgressHUD hud;
@@ -40,6 +40,7 @@ public class SignIn extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         if (mAuth.getCurrentUser() != null) {
+
             startActivity(new Intent(SignIn.this, Home.class));
             finish();
         }
@@ -51,9 +52,21 @@ public class SignIn extends AppCompatActivity {
         etPassword1 = findViewById(R.id.etPassword1);
         etEmail1 = findViewById(R.id.etemail1);
         btnLogin1 = findViewById(R.id.btnLogin1);
+        tvReset = (TextView)findViewById(R.id.tvReset);
+
 
         progressDialog = new ProgressDialog(SignIn.this);
 
+        tvReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent reg = new Intent(SignIn.this, ResetPassword.class);
+                reg.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                reg.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(reg);
+                finish();
+            }
+        });
         btnLogin1.setOnClickListener(new View.OnClickListener() {
 
             @Override

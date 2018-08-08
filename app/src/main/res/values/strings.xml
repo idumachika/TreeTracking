@@ -47,6 +47,7 @@
     <string name="saved">Saved</string>
     <string name="discard">Discard</string>
     <string name="cancel">Cancel</string>
+    <string name="permissions_loader_meta_key">1</string>
 
     <!--parse server details-->
     <string name="parse_server_url">https://tree-app.herokuapp.com/parse</string>
@@ -80,5 +81,16 @@
     <string name="lastname">Lastname</string>
     <string name="submitTree1">Report Deforestation</string>
     <string name="ok">OK</string>
+    <string name="accept_permission">Acccept all permissions</string>
+    <string name="permission_text">Please Click below to accept all permissions for the App to work well</string>
+    <string name="app_text">Reporting tree planting(Afforestation) and Tree removal(Deforestation) activities made easy!</string>
+    <string name="click">Click here to Continue</string>
+
+    <string name="password_recovery">Recover your password</string>
+    <string name="hint_email">Email</string>
+    <string name="btn_reset_password">Reset Password</string>
+    <string name="forgot_password_msg">Put your registered Email Id to receive password reset instructions.</string>
+    <string name="reset_message">We have sent you instructions to reset your password!</string>
+    <string name="btn_back"><![CDATA[<< Back]]></string>
 
 </resources>

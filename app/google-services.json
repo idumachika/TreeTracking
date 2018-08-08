@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "585264794767-4ml5fj5immbgqmilaraq4de9a96igmno.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.iduma.tree_tracking",
+            "certificate_hash": "ddd41d1ef153c4939a3bc05d68ceff404439546b"
+          }
+        },
+        {
           "client_id": "585264794767-58f7sfu8dppa502bbcnko7qbpq96fin7.apps.googleusercontent.com",
           "client_type": 3
         }

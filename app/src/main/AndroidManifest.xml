@@ -23,7 +23,6 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.example.iduma.tree_tracking.permission.MAPS_RECEIVE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <uses-feature
@@ -45,13 +44,17 @@
         <activity
             android:name=".Activities.Home"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="@string/permissions_loader_meta_key"
+                android:value="android.permission.READ_EXTERNAL_STORAGE,                 android.permission.CAMERA, android.permission.ACCESS_FINE_LOCATION" />
+        </activity>
         <activity
             android:name=".Activities.ReportDeforestation"
             android:label="Report Deforestation" />
         <activity
             android:name=".Activities.SignUp"
-            android:label="Sign Up"></activity>
+            android:label="Sign Up" />
         <activity android:name=".Activities.SignIn" />
         <activity
             android:name=".Activities.Profile"
@@ -101,7 +104,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".Activities.UserProfile"></activity>
+        <activity android:name=".Activities.UserProfile" />
+        <activity android:name=".Activities.Permissions" />
+        <activity android:name=".Activities.ResetPassword"></activity>
     </application>
 
 </manifest>

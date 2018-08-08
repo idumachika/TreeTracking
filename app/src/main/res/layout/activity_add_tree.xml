@@ -42,7 +42,7 @@
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
-        <TextView
+        <EditText
             android:id="@+id/tv_person_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,6 +51,7 @@
             android:background="@drawable/box"
             android:fontFamily="sans-serif"
             android:padding="10dp"
+            android:hint="Name of Planter"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 

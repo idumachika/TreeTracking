@@ -78,8 +78,10 @@ public class Home extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mAuth=FirebaseAuth.getInstance();
@@ -119,7 +121,7 @@ public class Home extends AppCompatActivity
 
         final Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.containsKey("location")) {
-            location = (Location) bundle.getParcelable("location");
+            location = bundle.getParcelable("location");
         }
         initControls();
         // First we need to check availability of play services
@@ -131,7 +133,7 @@ public class Home extends AppCompatActivity
         }
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,13 +174,13 @@ public class Home extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -211,10 +213,17 @@ public class Home extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.connect();
+
+        try {
+            if (mGoogleApiClient != null) {
+                mGoogleApiClient.connect();
+            }
+            mAuth.addAuthStateListener(authListener);
+
+        }catch (Exception e){
+
         }
-        mAuth.addAuthStateListener(authListener);
+
     }
 
     @Override
@@ -388,7 +397,7 @@ public class Home extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -481,7 +490,7 @@ public class Home extends AppCompatActivity
             }
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -510,6 +519,7 @@ public class Home extends AppCompatActivity
     public void signOut() {
         mAuth.signOut();
     }
+
 
 
 }
